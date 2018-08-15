@@ -24,5 +24,9 @@ RSpec.describe "Todo API", type: :request do
       expect(json_body).not_to be_empty
       expect(json_body['id']).to eq(todo_id)
     end
+
+    it 'returns status code 200' do
+      expect(response).to have_http_status(200)
+    end
   end
 end
