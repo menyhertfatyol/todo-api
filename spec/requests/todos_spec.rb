@@ -34,8 +34,36 @@ RSpec.describe "Todo API", type: :request do
     context "When the record doesn't exist" do
       let(:todo_id) { 99 }
 
-      it 'returns a 404 status' do
+      it 'returns status code 404' do
         expect(response).to have_http_status(404)
+      end
+
+      it 'returns error message' do
+        expect(json_body).to eq({"error" => true})
+      end
+    end
+  end
+
+  describe 'POST /todos' do
+    let(:valid_payload) { {name: "Wash the car", description: "The effects of the last off-road experiment's should be washed off...", status: "incomplete", due_at: "2018-09-23T18:00:00.000Z"} }
+
+    context "When request is valid" do
+      before { post '/todos', params: valid_payload }
+
+      it 'creates new todo' do
+        expect(json_body["name"]).to eq("Wash the car")
+      end
+
+      it 'returns status code 201' do
+        expect(response).to have_http_status(201)
+      end
+    end
+
+    context "When request is invalid" do
+      before { post '/todos', params: {name: "Wake up"} }
+
+      it 'returns status code 442' do
+        expect(response).to have_http_status(442)
       end
     end
   end

@@ -1,3 +1,3 @@
 class Todo < ApplicationRecord
-  validates_presence_of :name, :description, :status, :due_at
+  validates :name, :description, :status, :due_at, presence: true
 end
