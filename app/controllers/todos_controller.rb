@@ -1,7 +1,4 @@
 class TodosController < ApplicationController
-  rescue_from ActiveRecord::RecordNotFound do
-    render json: {error: true}, status: :not_found
-  end
 
   def index
     @todos = Todo.all
@@ -14,7 +11,7 @@ class TodosController < ApplicationController
   end
 
   def create
-    @todo = Todo.create(todo_params)
+    @todo = Todo.create!(todo_params)
     render json: @todo, status: :created
   end
 

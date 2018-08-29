@@ -39,7 +39,7 @@ RSpec.describe "Todo API", type: :request do
       end
 
       it 'returns error message' do
-        expect(json_body).to eq({"error" => true})
+        expect(json_body["error"]).to match(/Couldn't find Todo/)
       end
     end
   end
@@ -63,7 +63,7 @@ RSpec.describe "Todo API", type: :request do
       before { post '/todos', params: {name: "Wake up"} }
 
       it 'returns status code 442' do
-        expect(response).to have_http_status(442)
+        expect(response).to have_http_status(422)
       end
     end
   end
