@@ -44,6 +44,20 @@ RSpec.describe "Todo API", type: :request do
     end
   end
 
+  describe 'GET /todos/:status' do
+    before { get '/todos?status=incomplete' }
+
+    context "When status does exist" do
+      it 'returns all incomplete todos' do
+        expect(json_body.to_s).not_to match(/"status"=>"completed"/)
+      end
+
+      it 'returns status code 200' do
+        expect(response).to have_http_status(200)
+      end
+    end
+  end
+
   describe 'POST /todos' do
     let(:valid_payload) { {name: "Wash the car", description: "The effects of the last off-road experiment's should be washed off...", status: "incomplete", due_at: "2018-09-23T18:00:00.000Z"} }
 
@@ -89,7 +103,7 @@ RSpec.describe "Todo API", type: :request do
   end
 
   describe 'DELETE /todos/:id' do
-    before { delete "/todos/#{todo_id}"}
+    before { delete "/todos/#{todo_id}" }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)

@@ -1,7 +1,11 @@
 class TodosController < ApplicationController
 
   def index
-    @todos = Todo.all
+    if params[:status]
+      @todos = Todo.where(status: params[:status])
+    else
+      @todos = Todo.all
+    end
     render json: @todos
   end
 
