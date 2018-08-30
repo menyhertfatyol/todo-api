@@ -39,7 +39,7 @@ RSpec.describe "Todo API", type: :request do
       end
 
       it 'returns error message' do
-        expect(json_body["error"]).to match(/Couldn't find Todo/)
+        expect(response.body).to match(/Couldn't find Todo/)
       end
     end
   end
@@ -62,9 +62,37 @@ RSpec.describe "Todo API", type: :request do
     context "When request is invalid" do
       before { post '/todos', params: {name: "Wake up"} }
 
-      it 'returns status code 442' do
+      it 'returns status code 422' do
         expect(response).to have_http_status(422)
       end
+
+      it 'returns validation error message' do
+        expect(response.body).to match(/Validation failed/)
+      end
+    end
+  end
+
+  describe 'PUT /todos/:id' do
+    let(:valid_payload) { {name: "Read a book"} }
+
+    context 'When request is valid' do
+      before { put "/todos/#{todo_id}", params: valid_payload }
+
+      it 'returns status code 204' do
+        expect(response).to have_http_status(204)
+      end
+
+      it 'returns an empty response' do
+        expect(response.body).to be_empty
+      end
+    end
+  end
+
+  describe 'DELETE /todos/:id' do
+    before { delete "/todos/#{todo_id}"}
+
+    it 'returns status code 204' do
+      expect(response).to have_http_status(204)
     end
   end
 end
