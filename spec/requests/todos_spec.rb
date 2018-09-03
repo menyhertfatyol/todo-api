@@ -45,15 +45,23 @@ RSpec.describe "Todo API", type: :request do
   end
 
   describe 'GET /todos/:status' do
-    before { get '/todos?status=incomplete' }
-
     context "When status does exist" do
+      before { get '/todos?status=incomplete' }
+
       it 'returns all incomplete todos' do
         expect(json_body.to_s).not_to match(/"status"=>"completed"/)
       end
 
       it 'returns status code 200' do
         expect(response).to have_http_status(200)
+      end
+    end
+
+    context "When status does not exist" do
+      before { get '/todos?status=active' }
+
+      it 'returns empty array' do
+        expect(json_body).to eq([])
       end
     end
   end
