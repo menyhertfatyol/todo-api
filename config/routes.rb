@@ -1,3 +1,5 @@
 Rails.application.routes.draw do
-  resources :todos
+  scope 'api' do
+    resources :todos
+  end
 end
