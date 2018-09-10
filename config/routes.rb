@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  scope 'api' do
+  namespace "api" do
     resources :todos
   end
 end

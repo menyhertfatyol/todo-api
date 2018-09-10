@@ -1,4 +1,4 @@
-class TodosController < ApplicationController
+class Api::TodosController < ApplicationController
 
   def index
     if params[:status]
